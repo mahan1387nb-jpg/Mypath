@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MY PATH Pro | مسیر من</title>
+  <style>
+    :root {
+      --bg: #0b0e14;
+      --card-bg: rgba(22, 27, 34, 0.9);
+      --border: rgba(255, 215, 0, 0.2);
+      --accent: #ffd700;
+      --accent-glow: rgba(255, 215, 0, 0.35);
+      --text: #f0f6fc;
+      --text-muted: #8b949e;
+      --success: #2ea043;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding-bottom: 80px;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(180deg, rgba(255,215,0,0.1) 0%, rgba(11,14,20,0) 100%);
+      padding: 20px 16px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .app-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: 1px;
+      text-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .quote {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    .container {
+      padding: 16px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(11, 14, 20, 0.96);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 1000;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      width: 20%;
+      font-weight: bold;
+    }
+
+    .nav-btn.active { color: var(--accent); }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .schedule-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      margin-bottom: 8px;
+      border-right: 3px solid var(--accent);
+      cursor: pointer;
+    }
+
+    .schedule-item.done {
+      opacity: 0.45;
+      border-right-color: var(--success);
+      text-decoration: line-through;
+    }
+
+    .schedule-time {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .schedule-task {
+      font-size: 0.88rem;
+      margin-top: 2px;
+    }
+
+    .custom-checkbox {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .schedule-item.done .custom-checkbox {
+      background: var(--success);
+      border-color: var(--success);
+      color: #fff;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      outline: none;
+    }
+
+    button.btn-primary {
+      background: var(--accent);
+      color: #000;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+
+    .chat-box {
+      height: 200px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .chat-msg {
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+
+    .chat-msg.user {
+      align-self: flex-end;
+      background: var(--accent);
+      color: #000;
+    }
+
+    .chat-msg.ai {
+      align-self: flex-start;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="app-title">🖤 MY PATH Pro</div>
+    <div class="quote">«قرار نیست یک‌شبه تغییر کنم؛ قرار است هر روز ادامه بدهم.»</div>
+  </header>
+
+  <div class="container">
+    
+    <div id="tab-overview" class="tab-content active">
+      <div class="card">
+        <div class="card-title">📊 وضعیت امروز</div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div class="stat-number" id="progress-text">۰٪</div>
+            <div class="stat-label">پیشرفت برنامه‌ها</div>
+          </div>
+          <div>
+            <div class="stat-number" style="color: var(--accent);">۱ 🔥</div>
+            <div class="stat-label">روزهای متوالی (Streak)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">⚡ آمار سریع</div>
+        <div style="display: flex; justify-content: space-between; text-align: center;">
+          <div>
+            <div class="stat-number" id="burned-calories">۰</div>
+            <div class="stat-label">کالری ورزشی</div>
+          </div>
+          <div>
+            <div class="stat-number" id="water-count">۰</div>
+            <div class="stat-label">لیوان آب</div>
+          </div>
+          <div>
+            <div class="stat-number" id="tasks-done">۰/۱۲</div>
+            <div class="stat-label">کار انجام‌شده</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-schedule" class="tab-content">
+      <div class="card">
+        <div class="card-title">📅 برنامه روزانه (۰۷:۰۰ تا ۲۲:۰۰)</div>
+        <div id="schedule-list"></div>
+      </div>
+    </div>
+
+    <div id="tab-fitness" class="tab-content">
+      <div class="card">
+        <div class="card-title">💪 کالری‌شمار و تمرین Lyfta</div>
+        <select id="exercise-type">
+          <option value="150">تمرین بدنسازی در خانه (۳۰ دقیقه)</option>
+          <option value="200">تمرین هوازی / کاردیو (۳۰ دقیقه)</option>
+          <option value="100">حرکات کششی و نرمش (۳۰ دقیقه)</option>
+        </select>
+        <input type="number" id="exercise-sets" placeholder="تعداد ست‌ها (مثلاً ۴)">
+        <input type="number" id="exercise-reps" placeholder="تعداد تکرار در هر ست (مثلاً ۱۲)">
+        <button class="btn-primary" onclick="addExercise()">ثبت تمرین و محاسبه کالری</button>
+      </div>
+      <div class="card">
+        <div class="card-title">📋 تاریخچه تمرین امروز</div>
+        <div id="exercise-log" style="font-size: 0.85rem; color: var(--text-muted);">هنوز تمرینی ثبت نشده است.</div>
+      </div>
+    </div>
+
+    <div id="tab-ai" class="tab-content">
+      <div class="card">
+        <div class="card-title">🤖 هوش مصنوعی همراه MY PATH</div>
+        <div class="chat-box" id="chat-box">
+          <div class="chat-msg ai">سلام ماهان! آماده‌ای برای برنامه‌ریزی درسی دوازدهم انسانی یا مشاوره انگیزشی امروز؟</div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="ai-input" placeholder="سوالم یا نکتیم اینه..." style="margin: 0;">
+          <button class="btn-primary" onclick="sendAiMsg()" style="width: auto; padding: 0 16px;">ارسال</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-notes" class="tab-content">
+      <div class="card">
+        <div class="card-title">💧 پایش آب و سلامت</div>
+        <button class="btn-primary" onclick="addWater()">+ اضافه کردن یک لیوان آب</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📝 ثبت آموخته‌های روزانه</div>
+        <textarea id="daily-notes" rows="4" placeholder="امروز چه چیزهای جدیدی یاد گرفتم یا ثبت کنم..."></textarea>
+        <button class="btn-primary" onclick="saveNotes()">ذخیره یادداشت شبانه</button>
+      </div>
+    </div>
+
+  </div>
+
+  <nav class="nav-bar">
+    <button class="nav-btn active" onclick="switchTab('overview', this)">داشبورد</button>
+    <button class="nav-btn" onclick="switchTab('schedule', this)">برنامه</button>
+    <button class="nav-btn" onclick="switchTab('fitness', this)">ورزش</button>
+    <button class="nav-btn" onclick="switchTab('ai', this)">هوش‌مصنوعی</button>
+    <button class="nav-btn" onclick="switchTab('notes', this)">ثبت و عادات</button>
+  </nav>
+
+  <script>
+    const scheduleData = [
+      { id: 1, time: "۰۷:۰۰", task: "🌅 بیداری و صبحانه" },
+      { id: 2, time: "۰۷:۳۰ - ۱۴:۰۰", task: "🏫 حضور در مدرسه" },
+      { id: 3, time: "۱۴:۰۰ - ۱۵:۳۰", task: "🍽️ ناهار و استراحت" },
+      { id: 4, time: "۱۵:۳۰ - ۱۶:۱۵", task: "📚 مطالعه دوازدهم انسانی" },
+      { id: 5, time: "۱۶:۱۵ - ۱۶:۳۵", task: "☕ استراحت و مدیریت گوشی" },
+      { id: 6, time: "۱۶:۳۵ - ۱۷:۲۰", task: "✍🏻 مطالعه و حل سؤال" },
+      { id: 7, time: "۱۷:۳۰ - ۱۸:۰۰", task: "💪 تمرین در خانه با Lyfta (سه روز در هفته)" },
+      { id: 8, time: "۱۸:۰۰ - ۱۹:۳۰", task: "🍲 شام و استراحت" },
+      { id: 9, time: "۱۹:۳۰ - ۲۰:۰۰", task: "📖 مرور درس‌ها" },
+      { id: 10, time: "۲۰:۰۰ - ۲۰:۴۵", task: "📚 کتاب‌خوانی / مطالعه تکمیلی" },
+      { id: 11, time: "۲۰:۴۵ - ۲۱:۰۰", task: "📝 ثبت آموخته‌های روز در My Path" },
+      { id: 12, time: "۲۱:۰۰ - ۲۲:۰۰", task: "🌙 آرامش و آماده‌شدن برای خواب" }
+    ];
+
+    let state = JSON.parse(localStorage.getItem('mypath_state')) || {
+      doneTasks: [],
+      water: 0,
+      calories: 0,
+      notes: "",
+      exerciseLogs: []
+    };
+
+    function saveState() {
+      localStorage.setItem('mypath_state', JSON.stringify(state));
+      updateUI();
+    }
+
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    function renderSchedule() {
+      const container = document.getElementById('schedule-list');
+      container.innerHTML = scheduleData.map(item => {
+        const isDone = state.doneTasks.includes(item.id);
+        return `
+          <div class="schedule-item ${isDone ? 'done' : ''}" onclick="toggleTask(${item.id})">
+            <div>
+              <div class="schedule-time">${item.time}</div>
+              <div class="schedule-task">${item.task}</div>
+            </div>
+            <div class="custom-checkbox">${isDone ? '✓' : ''}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleTask(id) {
+      if (state.doneTasks.includes(id)) {
+        state.doneTasks = state.doneTasks.filter(item => item !== id);
+      } else {
+        state.doneTasks.push(id);
+      }
+      saveState();
+    }
+
+    function addWater() {
+      state.water += 1;
+      saveState();
+    }
+
+    function addExercise() {
+      const type = parseInt(document.getElementById('exercise-type').value);
+      const sets = parseInt(document.getElementById('exercise-sets').value) || 1;
+      const reps = parseInt(document.getElementById('exercise-reps').value) || 10;
+      const cal = Math.round((type / 3) * (sets / 3));
+      
+      state.calories += cal;
+      state.exerciseLogs.push(`${sets} ست ${reps} تایی - ${cal} کالری`);
+      
+      document.getElementById('exercise-sets').value = '';
+      document.getElementById('exercise-reps').value = '';
+      saveState();
+    }
+
+    function saveNotes() {
+      state.notes = document.getElementById('daily-notes').value;
+      saveState();
+      alert('یادداشت روزانه ذخیره شد.');
+    }
+
+    function sendAiMsg() {
+      const input = document.getElementById('ai-input');
+      const txt = input.value.trim();
+      if (!txt) return;
+
+      const box = document.getElementById('chat-box');
+      box.innerHTML += `<div class="chat-msg user">${txt}</div>`;
+      input.value = '';
+
+      setTimeout(() => {
+        box.innerHTML += `<div class="chat-msg ai">برای مطالعه دوازدهم انسانی و برنامه امروزت، حتماً مرور فعال و حل تمرین‌ها رو نوبت به نوبت انجام بده. قدم به قدم جلو برو!</div>`;
+        box.scrollTop = box.scrollHeight;
+      }, 600);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function updateUI() {
+      renderSchedule();
+      const pct = Math.round((state.doneTasks.length / scheduleData.length) * 100);
+      document.getElementById('progress-text').innerText = pct + '٪';
+      document.getElementById('tasks-done').innerText = `${state.doneTasks.length}/${scheduleData.length}`;
+      document.getElementById('water-count').innerText = state.water;
+      document.getElementById('burned-calories').innerText = state.calories;
+      document.getElementById('daily-notes').value = state.notes || '';
+
+      if (state.exerciseLogs.length > 0) {
+        document.getElementById('exercise-log').innerHTML = state.exerciseLogs.map(l => `<div>• ${l}</div>`).join('');
+      }
+    }
+
+    updateUI();
+  </script>
+</body>
+  </html>
+                                                     
