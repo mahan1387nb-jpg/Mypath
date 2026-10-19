@@ -383,7 +383,7 @@
     function addWater() {
       state.water += 1;
       saveState();
-    }
+     sendNotification();
 
     function addExercise() {
       const type = parseInt(document.getElementById('exercise-type').value);
@@ -439,4 +439,18 @@
   </script>
 </body>
   </html>
-                                                     
+       function requestPermission() {
+if (!("Notification" in window)) {
+alert("مرورگر شما از اعلان‌ها پشتیبانی نمی‌کند.");
+} else {
+Notification.requestPermission();
+}
+}
+requestPermission();function sendNotification() {
+if (Notification.permission === "granted") {
+new Notification("یادآوری", {
+body: "برنامه روزانه خود را بررسی کنید!",
+});
+}
+}      
+            
