@@ -1,799 +1,425 @@
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#101114">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MY PATH Pro</title>
-
 <style>
-:root {
-  --bg: #101114;
-  --panel: #1b1c21;
-  --panel2: #24252b;
-  --gold: #d6b36a;
-  --text: #f5f5f5;
-  --muted: #a6a6ad;
-  --green: #65d6a0;
-  --red: #ff7777;
-  --border: #303139;
-}
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: Tahoma, Arial, sans-serif;
-  min-height: 100vh;
-}
-
-button, input, textarea, select {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.app {
-  max-width: 1000px;
-  margin: auto;
-  padding: 18px;
-  padding-bottom: 100px;
-}
-
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.logo {
-  width: 48px;
-  height: 48px;
-  border-radius: 15px;
-  background: var(--gold);
-  color: #171717;
-  display: grid;
-  place-items: center;
-  font-size: 23px;
-  font-weight: bold;
-}
-
-h1 { font-size: 21px; margin: 0 0 5px; }
-h2 { font-size: 20px; margin: 0 0 16px; }
-h3 { font-size: 15px; margin: 0 0 12px; }
-
-p { line-height: 1.9; }
-
-.muted { color: var(--muted); font-size: 13px; }
-
-.gold { color: var(--gold); }
-
-.panel {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 18px;
-  margin-bottom: 15px;
-}
-
-.hero {
-  background: linear-gradient(135deg, #29251d, #1b1c21 65%);
-  border-color: #57472b;
-}
-
-.hero p { margin-bottom: 0; }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.stat {
-  background: var(--panel2);
-  border-radius: 15px;
-  padding: 15px;
-}
-
-.stat-icon { font-size: 24px; }
-.stat-number { font-size: 23px; font-weight: bold; margin-top: 10px; }
-.stat-label { color: var(--muted); font-size: 12px; margin-top: 6px; }
-
-.progress {
-  background: #393940;
-  height: 8px;
-  border-radius: 20px;
-  overflow: hidden;
-  margin: 12px 0;
-}
-
-.progress-bar {
-  height: 100%;
-  width: 0%;
-  background: var(--gold);
-  transition: width .2s;
-}
-
-.btn {
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 11px 14px;
-  background: var(--panel2);
-  color: var(--text);
-}
-
-.btn:active, .nav-btn:active { transform: scale(.97); }
-
-.btn-gold {
-  background: var(--gold);
-  color: #151515;
-  border-color: var(--gold);
-  font-weight: bold;
-}
-
-.btn-danger {
-  color: var(--red);
-  border-color: #754040;
-}
-
-.full { width: 100%; }
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-input, textarea, select {
-  width: 100%;
-  background: #121317;
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px;
-  outline: none;
-  margin: 7px 0 12px;
-}
-
-input:focus, textarea:focus, select:focus {
-  border-color: var(--gold);
-}
-
-textarea {
-  min-height: 120px;
-  resize: vertical;
-  line-height: 1.9;
-}
-
-label {
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 13px 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.item:last-child { border-bottom: none; }
-
-.item input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  accent-color: var(--gold);
-  margin: 0;
-  flex-shrink: 0;
-}
-
-.item-text { flex: 1; }
-.item-text small { color: var(--muted); display: block; margin-top: 5px; }
-
-.done .item-title {
-  text-decoration: line-through;
-  color: var(--muted);
-}
-
-.delete-btn {
-  color: var(--red);
-  border: none;
-  background: transparent;
-  font-size: 18px;
-  padding: 8px;
-}
-
-.page { display: none; }
-.page.active { display: block; animation: fade .18s ease; }
-
-@keyframes fade {
-  from { opacity: .4; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background: rgba(20,21,25,.97);
-  border-top: 1px solid var(--border);
-  padding: 9px 6px calc(9px + env(safe-area-inset-bottom));
-  display: flex;
-  justify-content: space-around;
-  gap: 3px;
-  max-width: 1000px;
-  margin: auto;
-}
-
-.nav-btn {
-  flex: 1;
-  border: none;
-  border-radius: 12px;
-  padding: 9px 3px;
-  color: var(--muted);
-  background: transparent;
-  font-size: 11px;
-}
-
-.nav-btn .nav-icon {
-  display: block;
-  font-size: 21px;
-  margin-bottom: 5px;
-}
-
-.nav-btn.active {
-  color: var(--gold);
-  background: #302a20;
-}
-
-.empty {
-  color: var(--muted);
-  text-align: center;
-  padding: 24px 8px;
-  font-size: 13px;
-}
-
-.top-line {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.time {
-  direction: ltr;
-  color: var(--gold);
-  font-size: 13px;
-}
-
-.note {
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  line-height: 1.9;
-}
-
-footer {
-  text-align: center;
-  color: var(--muted);
-  font-size: 11px;
-  padding: 20px 0;
-}
-
-@media (min-width: 650px) {
-  .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-}
+*{box-sizing:border-box}
+body{margin:0;background:#101114;color:#f5f5f5;font-family:Tahoma,Arial,sans-serif}
+header{padding:20px;background:#1b1c21;border-bottom:1px solid #393939}
+h1{font-size:22px;color:#d6b36a;margin:0}
+header p{font-size:12px;color:#aaa;margin-bottom:0}
+main{max-width:750px;margin:auto;padding:15px;padding-bottom:100px}
+.page{display:none}
+.page.active{display:block}
+.card{background:#1b1c21;border:1px solid #33343a;border-radius:16px;padding:16px;margin-bottom:14px}
+h2{font-size:19px}
+h3{font-size:15px}
+button{font-family:inherit;cursor:pointer;touch-action:manipulation}
+.btn{background:#292a30;color:#fff;border:1px solid #45454d;border-radius:10px;padding:12px;margin:4px 0}
+.primary{background:#d6b36a;color:#171717;border:0;font-weight:bold}
+input,textarea{width:100%;padding:12px;background:#111216;color:#fff;border:1px solid #444;border-radius:10px;margin:8px 0;font-family:inherit}
+textarea{min-height:100px}
+.item{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #35353b}
+.item span{flex:1;overflow-wrap:anywhere}
+.item input{width:20px;margin:0}
+.item button{color:#ff8585;background:none;border:0;font-size:20px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#1b1c21;border-top:1px solid #444;display:flex;justify-content:space-around;padding:8px 2px calc(8px + env(safe-area-inset-bottom));z-index:99}
+nav button{background:transparent;color:#aaa;border:0;flex:1;font-size:11px;padding:8px 2px;border-radius:10px}
+nav button.active{color:#d6b36a;background:#302a20}
+nav b{display:block;font-size:21px;margin-bottom:5px}
+.small{font-size:12px;color:#aaa;line-height:1.8}
+#message{position:fixed;top:10px;left:10px;right:10px;background:#d6b36a;color:#111;padding:12px;border-radius:10px;display:none;z-index:200;text-align:center}
 </style>
 </head>
-
 <body>
-<div class="app">
-
+<div id="message" role="status"></div>
 <header>
-  <div class="brand">
-    <div class="logo">M</div>
-    <div>
-      <h1>MY PATH <span class="gold">Pro</span></h1>
-      <div class="muted">مسیر من؛ هر روز یک قدم جلوتر</div>
-    </div>
-  </div>
-  <button class="btn" id="headerSettings" aria-label="تنظیمات">⚙️</button>
+<h1>MY PATH Pro ✦</h1>
+<p>هر روز یک قدم جلوتر</p>
 </header>
 
-<!-- صفحه خانه -->
+<main>
 <section class="page active" id="home">
-  <div class="panel hero">
-    <div class="muted" id="todayDate">امروز</div>
-    <h2 style="margin-top:12px">مسیرت را ادامه بده. ✨</h2>
-    <p>قرار نیست از همه جلو بزنی؛ فقط از دیروز خودت بهتر باش.</p>
-  </div>
-
-  <div class="grid">
-    <div class="stat">
-      <div class="stat-icon">📚</div>
-      <div class="stat-number" id="studyStat">۰</div>
-      <div class="stat-label">وظایف انجام‌شده</div>
-    </div>
-    <div class="stat">
-      <div class="stat-icon">💧</div>
-      <div class="stat-number" id="waterStat">۰</div>
-      <div class="stat-label">لیوان آب امروز</div>
-    </div>
-    <div class="stat">
-      <div class="stat-icon">💪</div>
-      <div class="stat-number" id="habitStat">۰٪</div>
-      <div class="stat-label">پیشرفت عادت‌ها</div>
-    </div>
-    <div class="stat">
-      <div class="stat-icon">📝</div>
-      <div class="stat-number" id="noteStat">۰</div>
-      <div class="stat-label">یادداشت‌های ذخیره‌شده</div>
-    </div>
-  </div>
-
-  <div class="panel" style="margin-top:15px">
-    <div class="top-line">
-      <h3>🎯 پیشرفت امروز</h3>
-      <span class="gold" id="progressLabel">۰٪</span>
-    </div>
-    <div class="progress"><div class="progress-bar" id="homeProgress"></div></div>
-    <div class="muted">با انجام وظایف روزانه، نوار پیشرفت کامل می‌شود.</div>
-    <div class="actions">
-      <button class="btn btn-gold" data-page="schedule">📚 برنامه امروز</button>
-      <button class="btn" data-page="habits">💪 عادت‌ها</button>
-    </div>
-  </div>
-
-  <div class="panel">
-    <h3>📌 کارهای امروز</h3>
-    <div id="homeTasks"></div>
-  </div>
-</section>
-
-<!-- صفحه برنامه -->
-<section class="page" id="schedule">
-  <h2>📚 برنامه روزانه</h2>
-  <div class="panel">
-    <div class="muted">وظایف خودت را اضافه کن و پس از انجام، تیک بزن.</div>
-    <form id="taskForm">
-      <label for="taskTitle">عنوان وظیفه</label>
-      <input id="taskTitle" placeholder="مثلاً مطالعه فنون دوازدهم" required maxlength="100">
-      <label for="taskTime">زمان (اختیاری)</label>
-      <input id="taskTime" type="time">
-      <button class="btn btn-gold full" type="submit">＋ افزودن وظیفه</button>
-    </form>
-  </div>
-  <div class="panel">
-    <div class="top-line">
-      <h3>فهرست وظایف</h3>
-      <button class="btn" id="resetTasks">شروع دوباره روز</button>
-    </div>
-    <div id="taskList"></div>
-  </div>
-</section>
-
-<!-- صفحه عادت‌ها -->
-<section class="page" id="habits">
-  <h2>💪 عادت‌های من</h2>
-  <div class="panel">
-    <h3>عادت‌های روزانه</h3>
-    <div class="muted">هر عادت را که انجام دادی، علامت بزن.</div>
-    <div id="habitList"></div>
-    <div class="progress"><div class="progress-bar" id="habitProgress"></div></div>
-    <div class="muted" id="habitProgressText">۰ از ۰ عادت</div>
-  </div>
-
-  <div class="panel">
-    <h3>💧 آب نوشیدن</h3>
-    <div class="top-line">
-      <div>
-        <div class="stat-number"><span id="waterCount">۰</span> لیوان</div>
-        <div class="muted">مقدار آب را متناسب با نیاز و تشنگی‌ات تنظیم کن.</div>
-      </div>
-      <div style="font-size:32px">💧</div>
-    </div>
-    <div class="actions">
-      <button class="btn btn-gold" id="addWater">＋ یک لیوان</button>
-      <button class="btn" id="removeWater">− یک لیوان</button>
-    </div>
-  </div>
-</section>
-
-<!-- صفحه یادداشت‌ها -->
-<section class="page" id="notes">
-  <h2>📝 دفتر یادداشت</h2>
-  <div class="panel">
-    <h3>ایده‌ها و یادگیری‌های روزانه</h3>
-    <form id="noteForm">
-      <label for="noteTitle">عنوان</label>
-      <input id="noteTitle" placeholder="مثلاً یادگیری امروز" required maxlength="100">
-      <label for="noteBody">متن یادداشت</label>
-      <textarea id="noteBody" placeholder="امروز چه چیزی یاد گرفتی؟" required></textarea>
-      <button class="btn btn-gold full" type="submit">💾 ذخیره یادداشت</button>
-    </form>
-  </div>
-  <div class="panel">
-    <h3>یادداشت‌های ذخیره‌شده</h3>
-    <div id="noteList"></div>
-  </div>
-</section>
-
-<!-- صفحه تنظیمات -->
-<section class="page" id="settings">
-  <h2>⚙️ تنظیمات</h2>
-
-  <div class="panel">
-    <h3>👤 مشخصات مسیر من</h3>
-    <label for="userName">نام نمایشی</label>
-    <input id="userName" placeholder="نام دلخواه">
-    <label for="mainGoal">هدف اصلی من</label>
-    <textarea id="mainGoal" placeholder="هدف مهم این دوره از زندگی من چیست؟"></textarea>
-    <button class="btn btn-gold full" id="saveProfile">ذخیره مشخصات</button>
-  </div>
-
-  <div class="panel">
-    <h3>💾 پشتیبان‌گیری</h3>
-    <p class="muted">یک نسخه از اطلاعاتت بگیر تا بتوانی بعداً آن را بازیابی کنی.</p>
-    <div class="actions">
-      <button class="btn btn-gold" id="exportData">⬇️ خروجی اطلاعات</button>
-      <button class="btn" id="importButton">⬆️ بازیابی اطلاعات</button>
-      <input id="importFile" type="file" accept=".json,application/json" hidden>
-    </div>
-  </div>
-
-  <div class="panel">
-    <h3>🔒 حریم خصوصی</h3>
-    <p class="muted">اطلاعات این نسخه روی مرورگر همین دستگاه ذخیره می‌شود؛ با پاک شدن داده‌های مرورگر ممکن است از دست برود. خروجی پشتیبان بگیر.</p>
-    <button class="btn btn-danger full" id="clearData">پاک کردن همه اطلاعات</button>
-  </div>
-
-  <div class="panel">
-    <h3>ℹ️ درباره برنامه</h3>
-    <p class="muted">MY PATH Pro — نسخه شخصی برای برنامه‌ریزی، عادت‌ها و ثبت یادگیری‌ها. این نسخه بدون هوش مصنوعی و بدون نیاز به اینترنت کار می‌کند.</p>
-  </div>
-</section>
-
-<footer>MY PATH Pro · مسیر پیشرفت تو از قدم‌های کوچک ساخته می‌شود.</footer>
+<div class="card">
+<h2>به مسیر خودت خوش اومدی 🌱</h2>
+<p>قرار نیست از همه جلو بزنی؛ فقط از دیروز خودت بهتر باش.</p>
+<p id="date" class="small"></p>
 </div>
+<div class="card">
+<h3>📊 وضعیت امروز</h3>
+<p>وظایف انجام‌شده: <strong id="doneCount">۰</strong></p>
+<p>تعداد یادداشت‌ها: <strong id="noteCount">۰</strong></p>
+<p>لیوان آب: <strong id="waterCount">۰</strong></p>
+<button class="btn primary" data-go="tasks">📚 رفتن به برنامه</button>
+</div>
+<div class="card">
+<h3>🎯 هدف من</h3>
+<p id="goalDisplay" class="small">هدفت را در تنظیمات بنویس.</p>
+<button class="btn" data-go="settings">✏️ ثبت هدف</button>
+</div>
+</section>
 
-<!-- نوار پایین -->
-<nav class="bottom-nav" aria-label="منوی اصلی">
-  <button class="nav-btn active" data-page="home">
-    <span class="nav-icon">🏠</span>خانه
-  </button>
-  <button class="nav-btn" data-page="schedule">
-    <span class="nav-icon">📚</span>برنامه
-  </button>
-  <button class="nav-btn" data-page="habits">
-    <span class="nav-icon">💪</span>عادت‌ها
-  </button>
-  <button class="nav-btn" data-page="notes">
-    <span class="nav-icon">📝</span>یادداشت
-  </button>
-  <button class="nav-btn" data-page="settings">
-    <span class="nav-icon">⚙️</span>تنظیمات
-  </button>
+<section class="page" id="tasks">
+<h2>📚 برنامه روزانه</h2>
+<div class="card">
+<form id="taskForm">
+<label for="taskInput">عنوان وظیفه</label>
+<input id="taskInput" maxlength="150" placeholder="مثلاً مطالعه فنون" required>
+<button class="btn primary" type="submit">＋ افزودن وظیفه</button>
+</form>
+</div>
+<div class="card">
+<h3>فهرست وظایف</h3>
+<div id="taskList"></div>
+</div>
+</section>
+
+<section class="page" id="habits">
+<h2>💪 عادت‌ها و سلامتی</h2>
+<div class="card">
+<h3>عادت‌های روزانه</h3>
+<div id="habitList"></div>
+</div>
+<div class="card">
+<h3>💧 آب نوشیدن</h3>
+<p>امروز: <strong id="waterDisplay">۰</strong> لیوان</p>
+<button class="btn primary" id="addWater" type="button">＋ افزودن یک لیوان</button>
+<button class="btn" id="minusWater" type="button">− کم کردن یک لیوان</button>
+</div>
+</section>
+
+<section class="page" id="notes">
+<h2>📝 یادداشت‌های من</h2>
+<div class="card">
+<form id="noteForm">
+<label for="noteTitle">عنوان یادداشت</label>
+<input id="noteTitle" maxlength="150" placeholder="یادگیری امروز" required>
+<label for="noteBody">متن</label>
+<textarea id="noteBody" placeholder="چه چیزی یاد گرفتی؟" required></textarea>
+<button class="btn primary" type="submit">💾 ذخیره یادداشت</button>
+</form>
+</div>
+<div class="card">
+<h3>یادداشت‌های ذخیره‌شده</h3>
+<div id="noteList"></div>
+</div>
+</section>
+
+<section class="page" id="settings">
+<h2>⚙️ تنظیمات</h2>
+<div class="card">
+<h3>هدف اصلی من</h3>
+<textarea id="goalInput" placeholder="هدف مهمت را بنویس"></textarea>
+<button class="btn primary" id="saveGoal" type="button">ذخیره هدف</button>
+</div>
+<div class="card">
+<h3>💾 پشتیبان‌گیری</h3>
+<p class="small">برای نگهداری امن اطلاعات، هر چند وقت یک‌بار خروجی بگیر.</p>
+<button class="btn primary" id="backup" type="button">⬇️ دریافت فایل پشتیبان</button>
+<button class="btn" id="restoreButton" type="button">⬆️ بازیابی پشتیبان</button>
+<input id="restoreFile" type="file" accept=".json,application/json" hidden>
+</div>
+<div class="card">
+<h3>🔒 ذخیره‌سازی</h3>
+<p class="small">اطلاعات در مرورگر همین دستگاه ذخیره می‌شود. پاک کردن داده‌های مرورگر یا باز کردن فایل در مرورگر دیگر ممکن است دسترسی به آن را از بین ببرد؛ فایل پشتیبان را نگه دار.</p>
+<button class="btn" id="resetChecks" type="button">شروع دوباره عادت‌های امروز</button>
+<button class="btn" id="clearAll" type="button" style="color:#ff8585">پاک کردن همه اطلاعات</button>
+</div>
+</section>
+</main>
+
+<nav aria-label="منوی اصلی">
+<button class="active" data-go="home" type="button"><b>🏠</b>خانه</button>
+<button data-go="tasks" type="button"><b>📚</b>برنامه</button>
+<button data-go="habits" type="button"><b>💪</b>عادت‌ها</button>
+<button data-go="notes" type="button"><b>📝</b>یادداشت</button>
+<button data-go="settings" type="button"><b>⚙️</b>تنظیمات</button>
 </nav>
 
 <script>
+(function(){
 "use strict";
 
-/* ---------- ابزارهای پایه ---------- */
-
-const STORAGE_KEY = "mypath_pro_v2";
-
-const defaultHabits = [
-  { id: "study", title: "📚 مطالعه و درس", done: false },
-  { id: "reading", title: "📖 کتاب‌خوانی", done: false },
-  { id: "exercise", title: "💪 تمرین ورزشی یا استراحت فعال", done: false },
-  { id: "learning", title: "🧠 ثبت یادگیری روزانه", done: false },
-  { id: "routine", title: "🌙 خواب و نظم روزانه", done: false }
+const KEY = "MY_PATH_PRO_STORAGE_V3";
+const HABITS = [
+ "مطالعه درس",
+ "کتاب‌خوانی",
+ "ورزش یا تحرک",
+ "ثبت یادگیری روزانه",
+ "نظم خواب"
 ];
 
-function todayKey() {
-  const d = new Date();
-  return d.getFullYear() + "-" +
-    String(d.getMonth() + 1).padStart(2, "0") + "-" +
-    String(d.getDate()).padStart(2, "0");
+function fresh(){
+ return {
+  tasks:[],
+  habits:HABITS.map((title,i)=>({id:i+1,title,done:false})),
+  notes:[],
+  water:0,
+  goal:"",
+  nextId:10,
+  day:new Date().toLocaleDateString("en-CA")
+ };
 }
 
-function newState() {
-  return {
-    date: todayKey(),
-    tasks: [
-      { id: 1, title: "مطالعه درس‌های دوازدهم", time: "15:30", done: false },
-      { id: 2, title: "تمرین و حل سؤال", time: "16:35", done: false },
-      { id: 3, title: "کتاب‌خوانی", time: "20:00", done: false },
-      { id: 4, title: "نوشتن یادگیری روزانه", time: "20:45", done: false }
-    ],
-    habits: defaultHabits.map(h => ({ ...h })),
-    water: 0,
-    notes: [],
-    profile: { name: "", goal: "" },
-    nextId: 10
-  };
-}
-
-function loadState() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return newState();
-
-    const saved = JSON.parse(raw);
-    const fresh = newState();
-
-    if (!saved || typeof saved !== "object") return fresh;
-
-    // وظایف و عادت‌های تیک‌خورده هر روز از نو شروع می‌شوند.
-    if (saved.date !== todayKey()) {
-      fresh.notes = Array.isArray(saved.notes) ? saved.notes : [];
-      fresh.profile = saved.profile || fresh.profile;
-      fresh.nextId = Number(saved.nextId) || 10;
-      return fresh;
-    }
-
-    return {
-      ...fresh,
-      ...saved,
-      tasks: Array.isArray(saved.tasks) ? saved.tasks : fresh.tasks,
-      habits: Array.isArray(saved.habits) ? saved.habits : fresh.habits,
-      notes: Array.isArray(saved.notes) ? saved.notes : [],
-      profile: saved.profile || fresh.profile,
-      water: Math.max(0, Number(saved.water) || 0),
-      nextId: Number(saved.nextId) || 10
-    };
-  } catch (error) {
-    console.error("خطا در خواندن اطلاعات:", error);
-    return newState();
+function load(){
+ try{
+  const raw=localStorage.getItem(KEY);
+  if(!raw)return fresh();
+  const data=JSON.parse(raw);
+  if(!data || typeof data!=="object")return fresh();
+  const base=fresh();
+  const result={...base,...data};
+  if(!Array.isArray(result.tasks))result.tasks=[];
+  if(!Array.isArray(result.notes))result.notes=[];
+  if(!Array.isArray(result.habits))result.habits=base.habits;
+  if(!Number.isFinite(Number(result.water)))result.water=0;
+  if(result.day!==base.day){
+   result.habits=base.habits;
+   result.water=0;
+   result.tasks=result.tasks.map(t=>({...t,done:false}));
+   result.day=base.day;
   }
+  return result;
+ }catch(e){
+  return fresh();
+ }
 }
 
-let state = loadState();
+let data=load();
+let messageTimer=null;
 
-function saveState() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  } catch (error) {
-    alert("ذخیره اطلاعات انجام نشد. فضای مرورگر را بررسی کن.");
-    console.error(error);
+function persist(){
+ try{
+  localStorage.setItem(KEY,JSON.stringify(data));
+  return true;
+ }catch(e){
+  notify("ذخیره‌سازی ناموفق بود؛ فایل پشتیبان بگیر.");
+  return false;
+ }
+}
+
+function notify(text){
+ const box=document.getElementById("message");
+ box.textContent=text;
+ box.style.display="block";
+ clearTimeout(messageTimer);
+ messageTimer=setTimeout(()=>box.style.display="none",2400);
+}
+
+function esc(value){
+ return String(value??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ })[c]);
+}
+
+function fa(n){return String(n).replace(/\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[d]);}
+
+/* ناوبری: کلیک روی دکمه‌های منو و دکمه‌های data-go */
+function go(id){
+ const target=document.getElementById(id);
+ if(!target || !target.classList.contains("page"))return;
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ target.classList.add("active");
+ document.querySelectorAll("nav [data-go]").forEach(b=>{
+  b.classList.toggle("active",b.dataset.go===id);
+ });
+ render();
+ window.scrollTo(0,0);
+}
+
+document.addEventListener("click",function(e){
+ const button=e.target.closest("[data-go]");
+ if(button){
+  e.preventDefault();
+  go(button.dataset.go);
+ }
+});
+
+/* وظایف */
+function renderTasks(){
+ const list=document.getElementById("taskList");
+ if(!data.tasks.length){
+  list.innerHTML='<p class="small">هنوز وظیفه‌ای ثبت نشده است.</p>';
+  return;
+ }
+ list.innerHTML=data.tasks.map(t=>`
+  <div class="item">
+   <input type="checkbox" data-task="${esc(t.id)}" ${t.done?"checked":""} aria-label="انجام شد">
+   <span style="${t.done?"text-decoration:line-through;color:#aaa":""}">${esc(t.title)}</span>
+   <button type="button" data-delete-task="${esc(t.id)}" aria-label="حذف">×</button>
+  </div>`).join("");
+}
+
+document.getElementById("taskForm").addEventListener("submit",function(e){
+ e.preventDefault();
+ const input=document.getElementById("taskInput");
+ const title=input.value.trim();
+ if(!title)return;
+ data.tasks.push({id:data.nextId++,title,done:false});
+ persist();
+ input.value="";
+ render();
+ notify("وظیفه اضافه شد ✅");
+});
+
+document.addEventListener("change",function(e){
+ if(e.target.matches("[data-task]")){
+  const task=data.tasks.find(t=>String(t.id)===e.target.dataset.task);
+  if(task){task.done=e.target.checked;persist();render();}
+ }
+ if(e.target.matches("[data-habit]")){
+  const habit=data.habits.find(h=>String(h.id)===e.target.dataset.habit);
+  if(habit){habit.done=e.target.checked;persist();render();}
+ }
+});
+
+document.addEventListener("click",function(e){
+ const delTask=e.target.closest("[data-delete-task]");
+ if(delTask){
+  data.tasks=data.tasks.filter(t=>String(t.id)!==delTask.dataset.deleteTask);
+  persist();render();notify("وظیفه حذف شد.");
+ }
+ const delNote=e.target.closest("[data-delete-note]");
+ if(delNote){
+  data.notes=data.notes.filter(n=>String(n.id)!==delNote.dataset.deleteNote);
+  persist();render();notify("یادداشت حذف شد.");
+ }
+});
+
+/* عادت‌ها */
+function renderHabits(){
+ document.getElementById("habitList").innerHTML=data.habits.map(h=>`
+  <div class="item">
+   <input type="checkbox" data-habit="${esc(h.id)}" ${h.done?"checked":""}>
+   <span style="${h.done?"text-decoration:line-through;color:#aaa":""}">${esc(h.title)}</span>
+  </div>`).join("");
+ document.getElementById("waterDisplay").textContent=fa(data.water);
+ document.getElementById("waterCount").textContent=fa(data.water);
+}
+
+document.getElementById("addWater").addEventListener("click",function(){
+ data.water++;
+ persist();render();notify("ثبت شد 💧");
+});
+
+document.getElementById("minusWater").addEventListener("click",function(){
+ data.water=Math.max(0,data.water-1);
+ persist();render();
+});
+
+/* یادداشت‌ها */
+function renderNotes(){
+ const list=document.getElementById("noteList");
+ if(!data.notes.length){
+  list.innerHTML='<p class="small">یادداشتی ذخیره نشده است.</p>';
+  return;
+ }
+ list.innerHTML=[...data.notes].reverse().map(n=>`
+  <div class="item">
+   <span>
+    <strong>${esc(n.title)}</strong>
+    <div class="small">${esc(n.date)}</div>
+    <p style="white-space:pre-wrap">${esc(n.body)}</p>
+   </span>
+   <button type="button" data-delete-note="${esc(n.id)}" aria-label="حذف یادداشت">×</button>
+  </div>`).join("");
+}
+
+document.getElementById("noteForm").addEventListener("submit",function(e){
+ e.preventDefault();
+ const title=document.getElementById("noteTitle").value.trim();
+ const body=document.getElementById("noteBody").value.trim();
+ if(!title||!body)return;
+ data.notes.push({
+  id:data.nextId++,
+  title,
+  body,
+  date:new Date().toLocaleDateString("fa-IR")
+ });
+ persist();
+ this.reset();
+ render();
+ notify("یادداشت ذخیره شد ✅");
+});
+
+/* هدف */
+document.getElementById("saveGoal").addEventListener("click",function(){
+ data.goal=document.getElementById("goalInput").value.trim();
+ persist();render();notify("هدف ذخیره شد ✅");
+});
+
+/* پشتیبان */
+document.getElementById("backup").addEventListener("click",function(){
+ try{
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="MY-PATH-backup.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  notify("فایل پشتیبان آماده شد.");
+ }catch(e){notify("ساخت پشتیبان ناموفق بود.");}
+});
+
+document.getElementById("restoreButton").addEventListener("click",function(){
+ document.getElementById("restoreFile").click();
+});
+
+document.getElementById("restoreFile").addEventListener("change",async function(e){
+ const file=e.target.files&&e.target.files[0];
+ if(!file)return;
+ try{
+  const imported=JSON.parse(await file.text());
+  if(!imported||!Array.isArray(imported.tasks)||!Array.isArray(imported.habits)||!Array.isArray(imported.notes)){
+   throw new Error("Invalid backup");
   }
+  if(!confirm("اطلاعات فعلی با نسخه پشتیبان جایگزین شود؟"))return;
+  data={...fresh(),...imported};
+  data.day=new Date().toLocaleDateString("en-CA");
+  persist();render();notify("بازیابی انجام شد ✅");
+ }catch(err){notify("فایل پشتیبان معتبر نیست.");}
+ finally{e.target.value="";}
+});
+
+document.getElementById("resetChecks").addEventListener("click",function(){
+ if(!confirm("تیک عادت‌ها و وظایف برداشته شود؟"))return;
+ data.habits.forEach(h=>h.done=false);
+ data.tasks.forEach(t=>t.done=false);
+ data.water=0;
+ data.day=new Date().toLocaleDateString("en-CA");
+ persist();render();notify("روز تازه شروع شد.");
+});
+
+document.getElementById("clearAll").addEventListener("click",function(){
+ if(!confirm("تمام اطلاعات این برنامه پاک شود؟ ابتدا پشتیبان بگیر."))return;
+ data=fresh();persist();render();go("home");notify("اطلاعات پاک شد.");
+});
+
+/* داشبورد */
+function render(){
+ renderTasks();
+ renderHabits();
+ renderNotes();
+
+ document.getElementById("doneCount").textContent=
+  fa(data.tasks.filter(t=>t.done).length)+" از "+fa(data.tasks.length);
+ document.getElementById("noteCount").textContent=fa(data.notes.length);
+ document.getElementById("goalDisplay").textContent=data.goal||"هدفت را در تنظیمات بنویس.";
+ document.getElementById("goalInput").value=data.goal||"";
+ document.getElementById("date").textContent=new Date().toLocaleDateString("fa-IR",{
+  weekday:"long",year:"numeric",month:"long",day:"numeric"
+ });
 }
 
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[char]);
-}
-
-function toPersianNumber(value) {
-  return String(value).replace(/\d/g, digit => "۰۱۲۳۴۵۶۷۸۹"[digit]);
-}
-
-/* ---------- جابه‌جایی بین صفحات ---------- */
-
-function showPage(pageId) {
-  const page = document.getElementById(pageId);
-  if (!page) return;
-
-  document.querySelectorAll(".page").forEach(section => {
-    section.classList.toggle("active", section.id === pageId);
-  });
-
-  document.querySelectorAll(".nav-btn").forEach(button => {
-    button.classList.toggle("active", button.dataset.page === pageId);
-  });
-
-  renderAll();
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-document.addEventListener("click", event => {
-  const pageButton = event.target.closest("[data-page]");
-  if (pageButton) {
-    showPage(pageButton.dataset.page);
-  }
-});
-
-document.getElementById("headerSettings").addEventListener("click", () => {
-  showPage("settings");
-});
-
-/* ---------- وظایف ---------- */
-
-function renderTasks() {
-  const list = document.getElementById("taskList");
-  const home = document.getElementById("homeTasks");
-
-  if (state.tasks.length === 0) {
-    list.innerHTML = '<div class="empty">هنوز وظیفه‌ای نداری. یک مورد اضافه کن!</div>';
-    home.innerHTML = '<div class="empty">برای امروز وظیفه‌ای ثبت نشده است.</div>';
-    return;
-  }
-
-  const taskHTML = task => `
-    <div class="item ${task.done ? "done" : ""}">
-      <input type="checkbox"
-        data-task-check="${task.id}"
-        ${task.done ? "checked" : ""}
-        aria-label="تغییر وضعیت وظیفه">
-      <div class="item-text">
-        <div class="item-title">${escapeHTML(task.title)}</div>
-        ${task.time ? `<small class="time">${escapeHTML(task.time)}</small>` : ""}
-      </div>
-      <button class="delete-btn" data-delete-task="${task.id}" aria-label="حذف وظیفه">×</button>
-    </div>`;
-
-  list.innerHTML = state.tasks.map(taskHTML).join("");
-  home.innerHTML = state.tasks.slice(0, 4).map(taskHTML).join("");
-}
-
-document.getElementById("taskForm").addEventListener("submit", event => {
-  event.preventDefault();
-
-  const title = document.getElementById("taskTitle").value.trim();
-  const time = document.getElementById("taskTime").value;
-
-  if (!title) return;
-
-  state.tasks.push({
-    id: state.nextId++,
-    title,
-    time,
-    done: false
-  });
-
-  saveState();
-  event.target.reset();
-  renderAll();
-});
-
-document.addEventListener("change", event => {
-  const id = event.target.dataset.taskCheck;
-  if (id === undefined) return;
-
-  const task = state.tasks.find(item => item.id === Number(id));
-  if (!task) return;
-
-  task.done = event.target.checked;
-  saveState();
-  renderAll();
-});
-
-document.addEventListener("click", event => {
-  const button = event.target.closest("[data-delete-task]");
-  if (!button) return;
-
-  const id = Number(button.dataset.deleteTask);
-  state.tasks = state.tasks.filter(task => task.id !== id);
-  saveState();
-  renderAll();
-});
-
-document.getElementById("resetTasks").addEventListener("click", () => {
-  if (!confirm("تیک همه وظایف امروز برداشته شود؟")) return;
-
-  state.tasks.forEach(task => task.done = false);
-  saveState();
-  renderAll();
-});
-
-/* ---------- عادت‌ها و آب ---------- */
-
-function renderHabits() {
-  const list = document.getElementById("habitList");
-
-  list.innerHTML = state.habits.map(habit => `
-    <div class="item ${habit.done ? "done" : ""}">
-      <input type="checkbox"
-        data-habit-check="${escapeHTML(habit.id)}"
-        ${habit.done ? "checked" : ""}
-        aria-label="تغییر وضعیت عادت">
-      <div class="item-text">
-        <div class="item-title">${escapeHTML(habit.title)}</div>
-      </div>
-    </div>
-  `).join("");
-
-  const done = state.habits.filter(h => h.done).length;
-  const total = state.habits.length;
-  const percent = total ? Math.round(done / total * 100) : 0;
-
-  document.getElementById("habitProgress").style.width = percent + "%";
-  document.getElementById("habitProgressText").textContent =
-    `${toPersianNumber(done)} از ${toPersianNumber(total)} عادت انجام‌شده`;
-
-  document.getElementById("habitStat").textContent = toPersianNumber(percent) + "٪";
-  document.getElementById("waterCount").textContent = toPersianNumber(state.water);
-  document.getElementById("waterStat").textContent = toPersianNumber(state.water);
-}
-
-document.addEventListener("change", event => {
-  const id = event.target.dataset.habitCheck;
-  if (id === undefined) return;
-
-  const habit = state.habits.find(item => item.id === id);
-  if (!habit) return;
-
-  habit.done = event.target.checked;
-  saveState();
-  renderAll();
-});
-
-document.getElementById("addWater").addEventListener("click", () => {
-  state.water++;
-  saveState();
-  renderAll();
-});
-
-document.getElementById("removeWater").addEventListener("click", () => {
-  state.water = Math.max(0, state.water - 1);
-  saveState();
-  renderAll();
-});
-
-/* ---------- یادداشت‌ها ---------- */
-
-function renderNotes() {
-  const list = document.getElementById("noteList");
-
-  if (state.notes.length === 0) {
-    list.innerHTML = '<div class="empty">هنوز یادداشتی ذخیره نکرده‌ای.</div>';
-    return;
-  }
-
-  list.innerHTML = [...state.notes].reverse().map(note => `
-    <div class="item" style="align-items:flex-start">
-      <div class="item-text">
-        <strong>${escapeHTML(note.title)}</strong>
-        <small>${escapeHTML(note.date || "")}</small>
-        <div class="note" style="margin-top:8px">${escapeHTML(note.body)}</div>
-      </div>
-      <button class="delete-btn"
-        data-delete-note="${note.id}"
-        aria-label="حذف یادداشت">×</button>
-    </div>
-  `).join("");
-}
-
-document.getElementById("noteForm").addEventListener("submit", event => {
-  event.preventDefault();
-
-  const title = document.getElementById("noteTitle").value.trim();
-  const body = document.getElementById("noteBody").value.trim();
-
-  if (!title || !body) return;
-
-  state.notes.push({
-    id: state.nextId++,
-    title,
-    body,
-    date: new Date().toLocaleDateString("fa-IR")
-  });
-
-  saveState();
-  event.target.reset();
-  renderAll();
-  alert("یادداشت ذخیره شد ✅");
-});
-
-document.addEventListener("click
+render();
+})();
+</script>
+</body>
+  </html>
+  
