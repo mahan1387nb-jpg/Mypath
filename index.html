@@ -14,6 +14,7 @@
       --text: #f0f6fc;
       --text-muted: #8b949e;
       --success: #2ea043;
+      --danger: #da3633;
     }
 
     * {
@@ -187,5 +188,442 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
-      margin-top: 
+      margin-top: 10px;
+    }
+
+    .habit-btn {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 8px;
+      text-align: center;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 0.8rem;
+    }
+
+    .habit-btn.active {
+      background: rgba(46, 160, 67, 0.2);
+      border-color: var(--success);
+      color: #58a6ff;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      outline: none;
+    }
+
+    button.btn-primary {
+      background: var(--accent);
+      color: #000;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    button.btn-primary:active { opacity: 0.8; }
+
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+
+    .chat-box {
+      height: 220px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .chat-msg {
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+
+    .chat-msg.user {
+      align-self: flex-end;
+      background: var(--accent);
+      color: #000;
+    }
+
+    .chat-msg.ai {
+      align-self: flex-start;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+    }
+
+    .goal-box {
+      background: rgba(255,215,0,0.05);
+      border-right: 4px solid var(--accent);
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      margin-top: 10px;
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 8px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="app-title">🖤 MY PATH Pro</div>
+    <div class="date-badge" id="current-date">امروز</div>
+    <div class="quote">«قرار نیست یک‌شبه تغییر کنم؛ قرار است هر روز ادامه بدهم.»</div>
+  </header>
+
+  <div class="container">
     
+    <!-- داشبورد اصلی -->
+    <div id="tab-overview" class="tab-content active">
+      <div class="card">
+        <div class="card-title">
+          <span>📊 وضعیت امروز</span>
+          <button onclick="requestNotificationPermission()" style="width: auto; padding: 4px 10px; margin: 0; font-size: 0.75rem;" class="btn-primary">🔔 فعال‌سازی یادآوری</button>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div class="stat-number" id="progress-text">۰٪</div>
+            <div class="stat-label">پیشرفت برنامه‌ها</div>
+          </div>
+          <div>
+            <div class="stat-number" style="color: var(--accent);" id="streak-count">۱ 🔥</div>
+            <div class="stat-label">روزهای متوالی (Streak)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">⚡ آمار سریع روزانه</div>
+        <div style="display: flex; justify-content: space-between; text-align: center;">
+          <div>
+            <div class="stat-number" id="burned-calories">۰</div>
+            <div class="stat-label">کالری ورزشی</div>
+          </div>
+          <div>
+            <div class="stat-number" id="water-count">۰/۸</div>
+            <div class="stat-label">لیوان آب</div>
+          </div>
+          <div>
+            <div class="stat-number" id="tasks-done">۰/۱۲</div>
+            <div class="stat-label">کار انجام‌شده</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- جدید: موزیک تمرکز و مطالعه -->
+      <div class="card">
+        <div class="card-title">🎧 موزیک تمرکز و مطالعه</div>
+        <select id="audio-select" onchange="changeAudioSource()">
+          <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">🎵 موسیقی آرامش‌بخش مطالعه</option>
+          <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">🌧️ صدای باران و طبیعت</option>
+        </select>
+        <audio id="study-player" controls preload="none">
+          <source id="audio-source" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🎯 هدف روزانه من</div>
+        <div class="goal-box">
+          پیشرفت در درس، تقویت بدن و ساختن آینده‌ای بهتر.
+        </div>
+      </div>
+    </div>
+
+    <!-- برنامه روزانه -->
+    <div id="tab-schedule" class="tab-content">
+      <div class="card">
+        <div class="card-title">📅 برنامه روزانه من</div>
+        <div id="schedule-list"></div>
+      </div>
+
+      <!-- جدید: افزودن برنامه جدید -->
+      <div class="card">
+        <div class="card-title">➕ افزودن آیتم جدید به برنامه</div>
+        <input type="text" id="new-task-time" placeholder="زمان (مثلاً ۲۲:۰۰ - ۲۲:۳۰)">
+        <input type="text" id="new-task-title" placeholder="عنوان کار (مثلاً تست‌زنی)">
+        <button class="btn-primary" onclick="addNewTask()">افزودن به برنامه</button>
+      </div>
+    </div>
+
+    <!-- بخش ورزش و Lyfta -->
+    <div id="tab-fitness" class="tab-content">
+      <div class="card">
+        <div class="card-title">💪 کالری‌شمار و تمرین Lyfta</div>
+        <select id="exercise-type">
+          <option value="150">تمرین بدنسازی در خانه (۳۰ دقیقه)</option>
+          <option value="200">تمرین هوازی / کاردیو (۳۰ دقیقه)</option>
+          <option value="100">حرکات کششی و نرمش (۳۰ دقیقه)</option>
+        </select>
+        <input type="number" id="exercise-sets" placeholder="تعداد ست‌ها (مثلاً ۴)">
+        <input type="number" id="exercise-reps" placeholder="تعداد تکرار در هر ست (مثلاً ۱۲)">
+        <button class="btn-primary" onclick="addExercise()">ثبت تمرین و محاسبه کالری</button>
+      </div>
+      <div class="card">
+        <div class="card-title">📋 تاریخچه تمرین امروز</div>
+        <div id="exercise-log" style="font-size: 0.85rem; color: var(--text-muted);">هنوز تمرینی ثبت نشده است.</div>
+      </div>
+    </div>
+
+    <!-- هوش مصنوعی -->
+    <div id="tab-ai" class="tab-content">
+      <div class="card">
+        <div class="card-title">🤖 هوش مصنوعی همراه MY PATH</div>
+        <div class="chat-box" id="chat-box">
+          <div class="chat-msg ai">سلام ماهان! آماده‌ای برای برنامه‌ریزی درسی دوازدهم انسانی یا مشاوره انگیزشی امروز؟</div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="ai-input" placeholder="سؤال یا نکتت رو بنویس..." style="margin: 0;">
+          <button class="btn-primary" onclick="sendAiMsg()" style="width: auto; padding: 0 16px;">ارسال</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ثبت عادات و یادداشت -->
+    <div id="tab-notes" class="tab-content">
+      <div class="card">
+        <div class="card-title">💧 پایش آب (هدف: ۸ لیوان)</div>
+        <button class="btn-primary" onclick="addWater()">+ اضافه کردن یک لیوان آب</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">⚙️ عادات کلیدی امروز</div>
+        <div class="habit-grid">
+          <div class="habit-btn" id="h-nutrition" onclick="toggleHabit('nutrition')">🍽️ تغذیه منظم</div>
+          <div class="habit-btn" id="h-phone" onclick="toggleHabit('phone')">📵 مدیریت گوشی</div>
+          <div class="habit-btn" id="h-read" onclick="toggleHabit('read')">📖 مطالعه مفید</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📝 ثبت آموخته‌ها و یادداشت روزانه</div>
+        <textarea id="daily-notes" rows="4" placeholder="امروز چه چیزهای جدیدی یاد گرفتم یا ثبت کنم..."></textarea>
+        <button class="btn-primary" onclick="saveNotes()">ذخیره یادداشت شبانه</button>
+      </div>
+
+      <!-- جدید: بازنشانی اطلاعات برای روز جدید -->
+      <div class="card">
+        <div class="card-title">🔄 شروع روز جدید</div>
+        <button class="btn-danger" onclick="resetDayData()">صفر کردن آمار امروز</button>
+      </div>
+    </div>
+
+  </div>
+
+  <nav class="nav-bar">
+    <button class="nav-btn active" onclick="switchTab('overview', this)">داشبورد</button>
+    <button class="nav-btn" onclick="switchTab('schedule', this)">برنامه</button>
+    <button class="nav-btn" onclick="switchTab('fitness', this)">ورزش</button>
+    <button class="nav-btn" onclick="switchTab('ai', this)">هوش‌مصنوعی</button>
+    <button class="nav-btn" onclick="switchTab('notes', this)">ثبت و عادات</button>
+  </nav>
+
+  <script>
+    let scheduleData = JSON.parse(localStorage.getItem('mypath_tasks_v4')) || [
+      { id: 1, time: "۰۷:۰۰", task: "🌅 بیداری و صبحانه" },
+      { id: 2, time: "۰۷:۳۰ - ۱۴:۰۰", task: "🏫 حضور در مدرسه" },
+      { id: 3, time: "۱۴:۰۰ - ۱۵:۳۰", task: "🍽️ ناهار و استراحت" },
+      { id: 4, time: "۱۵:۳۰ - ۱۶:۱۵", task: "📚 مطالعه دوازدهم انسانی" },
+      { id: 5, time: "۱۶:۱۵ - ۱۶:۳۵", task: "☕ استراحت و مدیریت گوشی" },
+      { id: 6, time: "۱۶:۳۵ - ۱۷:۲۰", task: "✍🏻 مطالعه و حل سؤال" },
+      { id: 7, time: "۱۷:۳۰ - ۱۸:۰۰", task: "💪 تمرین در خانه با Lyfta (سه روز در هفته)" },
+      { id: 8, time: "۱۸:۰۰ - ۱۹:۳۰", task: "🍲 شام و استراحت" },
+      { id: 9, time: "۱۹:۳۰ - ۲۰:۰۰", task: "📖 مرور درس‌ها" },
+      { id: 10, time: "۲۰:۰۰ - ۲۰:۴۵", task: "📚 کتاب‌خوانی / مطالعه تکمیلی" },
+      { id: 11, time: "۲۰:۴۵ - ۲۱:۰۰", task: "📝 ثبت آموخته‌های روز در My Path" },
+      { id: 12, time: "۲۱:۰۰ - ۲۲:۰۰", task: "🌙 آرامش و آماده‌شدن برای خواب" }
+    ];
+
+    let state = JSON.parse(localStorage.getItem('mypath_state_v4')) || {
+      doneTasks: [],
+      water: 0,
+      calories: 0,
+      notes: "",
+      exerciseLogs: [],
+      habits: { nutrition: false, phone: false, read: false }
+    };
+
+    function renderPersianDate() {
+      try {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const persianDate = new Intl.DateTimeFormat('fa-IR', options).format(now);
+        document.getElementById('current-date').innerText = '📅 ' + persianDate;
+      } catch (e) {
+        document.getElementById('current-date').innerText = '📅 امروز';
+      }
+    }
+
+    function requestNotificationPermission() {
+      if ("Notification" in window) {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            alert("اعلان‌ها با موفقیت فعال شدند!");
+            sendNotification("MY PATH Pro", "یادآوری‌های روزانه شما فعال شد.");
+          } else {
+            alert("دسترسی اعلان داده نشد.");
+          }
+        });
+      } else {
+        alert("مرورگر شما از اعلان‌ها پشتیبانی نمی‌کند.");
+      }
+    }
+
+    function sendNotification(title, body) {
+      if ("Notification" in window && Notification.permission === "granted") {
+        try {
+          new Notification(title, { body: body });
+        } catch(e) {}
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem('mypath_state_v4', JSON.stringify(state));
+      localStorage.setItem('mypath_tasks_v4', JSON.stringify(scheduleData));
+      updateUI();
+    }
+
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    function renderSchedule() {
+      const container = document.getElementById('schedule-list');
+      if (!container) return;
+      container.innerHTML = scheduleData.map(item => {
+        const isDone = state.doneTasks.includes(item.id);
+        return `
+          <div class="schedule-item ${isDone ? 'done' : ''}" onclick="toggleTask(${item.id})">
+            <div>
+              <div class="schedule-time">${item.time}</div>
+              <div class="schedule-task">${item.task}</div>
+            </div>
+            <div class="custom-checkbox">${isDone ? '✓' : ''}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleTask(id) {
+      if (state.doneTasks.includes(id)) {
+        state.doneTasks = state.doneTasks.filter(item => item !== id);
+      } else {
+        state.doneTasks.push(id);
+        sendNotification("آفرین ماهان!", "یک بخش دیگه از برنامت انجام شد.");
+      }
+      saveState();
+    }
+
+    function addNewTask() {
+      const timeInput = document.getElementById('new-task-time').value.trim();
+      const titleInput = document.getElementById('new-task-title').value.trim();
+      if (!timeInput || !titleInput) {
+        alert("لطفاً زمان و عنوان کار را وارد کنید.");
+        return;
+      }
+      const newId = scheduleData.length ? Math.max(...scheduleData.map(s => s.id)) + 1 : 1;
+      scheduleData.push({ id: newId, time: timeInput, task: titleInput });
+      document.getElementById('new-task-time').value = '';
+      document.getElementById('new-task-title').value = '';
+      saveState();
+      alert("کار جدید به برنامه اضافه شد!");
+    }
+
+    function addWater() {
+      if (state.water < 8) {
+        state.water += 1;
+        saveState();
+      }
+    }
+
+    function toggleHabit(key) {
+      state.habits[key] = !state.habits[key];
+      saveState();
+    }
+
+    function addExercise() {
+      const type = parseInt(document.getElementById('exercise-type').value);
+      const sets = parseInt(document.getElementById('exercise-sets').value) || 1;
+      const reps = parseInt(document.getElementById('exercise-reps').value) || 10;
+      const cal = Math.round((type / 3) * (sets / 3));
+      
+      state.calories += cal;
+      state.exerciseLogs.push(`${sets} ست ${reps} تایی - ${cal} کالری`);
+      
+      document.getElementById('exercise-sets').value = '';
+      document.getElementById('exercise-reps').value = '';
+      saveState();
+    }
+
+    function saveNotes() {
+      state.notes = document.getElementById('daily-notes').value;
+      saveState();
+      alert('یادداشت روزانه ذخیره شد.');
+    }
+
+    function changeAudioSource() {
+      const select = document.getElementById('audio-select');
+      const player = document.getElementById('study-player');
+      const source = document.getElementById('audio-source');
+      source.src = select.value;
+      player.load();
+    }
+
+    function sendAiMsg() {
+      const input = document.getElementById('ai-input');
+      const txt = input.value.trim();
+      if (!txt) return;
+
+      const box = document.getElementById('chat-box');
+      box.innerHTML += `<div class="chat-msg user">${txt}</div>`;
+      input.value = '';
+
+      setTimeout(() => {
+        box.innerHTML += `<div class="chat-msg ai">برای مطالعه دوازدهم انسانی و برنامه‌ت، تمرکز روی تست‌زنی و مرور شبانه بسیار کلیدیه. ادامه بده!</div>`;
+        box.scrollTop = box.scrollHeight;
+      }, 600);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function resetDayData() {
+      if (confirm("آیا می‌خواهی آمار کارهای انجام‌شده، آب و کالری امروز صفر بشه؟")) {
+        state.doneTasks = [];
+        state.water = 0;
+        state.calories = 0;
+        state.exerciseLogs = [];
+        state.habits = { nutrition: false, phone: false, read: false };
+        saveState();
+      }
+    }
+
+    function updateUI() {
+      renderSchedule();
+      const pct = scheduleData.length ? Math.round((state.doneTasks.length / scheduleData.length) * 100) : 0;
+      document.getElementById('progress-text').innerText = pct + '٪';
+      document.getElementById('tasks-done').innerText = `${state.doneTasks.length}/${scheduleData.length}`;
+      document.getElementById('water-count').innerText = `${state.water}/۸`;
+      document.getElementById('burned-calories').innerText = 
